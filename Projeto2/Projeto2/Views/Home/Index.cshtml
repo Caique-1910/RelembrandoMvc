@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Projeto2.Models.item>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado</title>
+
+
+</head>
+<body>
+<h1>Itens</h1>
+
+<hr />
+
+<h2>Cadastrar item</h2>
+
+<form asp-controller="Home" asp-action="Cadastro" method="post">
+
+    <label>Nome do item:</label>
+    <input type="text" name="nomeItem" required />
+
+    <label>Quantidade:</label>
+    <input type="number" name="quantidade" min="1" required />
+
+    <button type="submit">Cadastrar</button>
+
+</form>
+<hr />
+
+<h2>Lista de itens</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table border="1" cellpadding="8">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Quantidade</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.id
+                    </td>
+
+                    <td>
+                        @item.nomeitem
+                    </td>
+
+                    <td>
+                        @item.quantidade
+                    </td>
+
+                    <td>
+
+                        <!-- EDITAR -->
+                        <form asp-controller="Home" asp-action="Editar" method="post">
+
+    <input type="hidden" name="id" value="@item.id" />
+
+    <input type="text"
+           name="nomeitem"
+           value="@item.nomeitem"
+           required />
+
+    <input type="number"
+           name="quantidade"
+           value="@item.quantidade"
+           min="1"
+           required />
+
+    <button type="submit">Editar</button>
+
+</form>
+
+                        <!-- EXCLUIR -->
+                        <form asp-controller="Home"
+                              asp-action="Excluir"
+                              method="post"
+                              style="display:inline;">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@item.id" />
+
+                            <button type="submit"
+                                    onclick="return confirm('Deseja excluir este item?');">
+                                Excluir
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
+else
+{
+    <p>Nenhum item cadastrado.</p>
+}
+</body>
+</html>

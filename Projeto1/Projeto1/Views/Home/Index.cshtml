@@ -1,8 +1,143 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<OutroNamespace.Livro>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+
+    <h1 class="mb-4">📚 Biblioteca</h1>
+
+    <!-- CADASTRO -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Cadastrar Livro</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-controller="Home" asp-action="Cadastrar" method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Nome do livro</label>
+                    <input type="text"
+                           name="nome"
+                           class="form-control"
+                           placeholder="Digite o nome do livro"
+                           required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <textarea name="descricao"
+                              class="form-control"
+                              placeholder="Digite a descrição do livro"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Cadastrar Livro
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- LISTAGEM -->
+    <div class="card">
+
+        <div class="card-header">
+            <h4>Livros cadastrados</h4>
+        </div>
+
+        <div class="card-body">
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var livro in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @livro.id
+                                    </td>
+
+                                    <td>
+                                        @livro.nome
+                                    </td>
+
+                                    <td>
+                                        @livro.descricao
+                                    </td>
+
+                                    <td>
+                                        @livro.dtLivro
+                                    </td>
+
+                                    <td>
+
+                                        <!-- EDITAR -->
+                                        <a asp-controller="Home"
+                                           asp-action="Editar"
+                                           asp-route-id="@livro.id"
+                                           class="btn btn-warning btn-sm">
+                                            Editar
+                                        </a>
+
+
+                                        <!-- EXCLUIR -->
+                                        <form asp-controller="Home"
+                                              asp-action="Excluir"
+                                              method="post"
+                                              style="display:inline;">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@livro.id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Deseja realmente excluir este livro?');">
+                                                Excluir
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">
+                    Nenhum livro cadastrado.
+                </p>
+            }
+
+        </div>
+
+    </div>
+
 </div>
+</body>
+</
