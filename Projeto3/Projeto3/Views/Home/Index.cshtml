@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Projeto3.Models.item>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mercado</title>
+    </head>
+    <html>
+    <body>
+        <h2>Itens</h2>
+        <h3>Cadastrar itens</h3>
+        <form asp-controller="Home" asp-action="Cadastrar" method="post">
+            <label>Nome:</label>
+            <input type="text" name="nomeItem" />
+
+            <label>Preço:</label>
+            <input type="text" name="preco" inputmode="decimal" />
+
+            <label>Descrição:</label>
+            <input type="text" name="descricao" />
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <hr />
+        <h3>Lista de Itens</h3>
+        @if (Model != null && Model.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Descrição</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.nomeItem</td>
+                            <td>@item.preco</td>
+                            <td>@item.descricao</td>
+                            <td>
+                                <form asp-controller="Home" asp-action="Editar" method="post">
+                                    <input type="hidden" name="id" value="@item.id" />
+
+                                    <input type="text"
+                                           name="nomeitem"
+                                           value="@item.nomeItem"
+                                           required />
+
+                                    <input type="text"
+                                           name="preco"
+                                           value="@item.preco"
+                                           inputmode="decimal"
+                                           step="any"
+                                           required />
+
+                                    <input type="text"
+                                           name="descricao"
+                                           value="@item.descricao" />
+
+                                    <button type="submit">Editar</button>
+                                </form>
+
+                                <form asp-controller="Home" asp-action="Excluir" method="post">
+                                    <input type="hidden" name="id" value="@item.id" />
+                                    <button type="submit" onclick="return confirm('Deseja excluir este item?');">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </body>
+</html>
